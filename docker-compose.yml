@@ -1,0 +1,27 @@
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    hostname: postgres
+
+  prepare_database:
+    image: ruby
+    volumes:
+      - bundle:/usr/local/bundle
+      - .:/app
+    working_dir: /app/database
+    command: bash -c "bundle install && ruby prepare_database.rb"
+    networks:
+      - network
+
+volumes:
+  pgdata:
+  bundle:
+
+networks:
+  network:
