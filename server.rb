@@ -2,22 +2,32 @@ require 'pg'
 require 'sinatra'
 require 'rack/handler/puma'
 
-conn = PG.connect(
-  host: 'postgres',
-  user: 'postgres',
-  dbname: 'postgres',
-  password: 'postgres'
-)
+def connect_database
+  PG.connect(
+    host: 'postgres',
+    user: 'postgres',
+    dbname: 'postgres',
+    password: 'postgres'
+  )
+end
 
 get '/tests' do
   content_type :json
-  medical_records = conn.exec('SELECT * FROM medical_record')
-  
-  records_array = medical_records.map do |record|
-    Hash[medical_records.fields.zip(record.values)]
+  begin
+    conn = connect_database
+    medical_records = conn.exec('SELECT * FROM medical_record')
+    
+    records_array = medical_records.map do |record|
+      Hash[medical_records.fields.zip(record.values)]
+    end
+    
+    records_array.to_json
+  rescue PG::Error => e
+    status 500
+    { error: 'Erro ao conectar ao banco de dados' }.to_json
+  ensure
+    conn.close if conn
   end
-  
-  records_array.to_json
 end
 
 Rack::Handler::Puma.run(
