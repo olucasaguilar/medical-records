@@ -19,3 +19,7 @@ Em toda execução deste comando, a tabela do banco será apagada e criada novam
 docker compose run --rm --service-ports server
 ```
 Para iniciar o servidor, o banco de dados deve estar populado e em execução.
+
+<!-- informando da rota localhost:3000/tests que exibe todos os registros médicos, que são 3900 atualmente -->
+### Rotas
+- `localhost:3000/tests` - Retorna todos os registros medicos em formato JSON. Atualmente contém 3900 registros.

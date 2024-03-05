@@ -27,18 +27,21 @@ class MedicalRecordImporter
   end
 
   def prepare_table
-    @conn.exec('DROP TABLE medical_record') if table_already_exists
+    @conn.exec('DROP TABLE IF EXISTS medical_record')
 
     converted_attributes = prepare_attributes
+    attribute_definitions = converted_attributes.map { |attr| "#{attr} VARCHAR" }.join(",\n  ")
 
-    @conn.exec("CREATE TABLE medical_record (#{converted_attributes.map { |attr| "#{attr} VARCHAR" }.join(', ')})")
+    create_table_query = <<~SQL 
+      CREATE TABLE medical_record (#{attribute_definitions})
+    SQL
+
+    @conn.exec(create_table_query)
     puts 'Prepared table'
   end
 
   def prepare_dataset
-    csv = CSV.read(CSV_PATH, col_sep: ';')
-    csv_attributes = csv[0]
-    csv_patients = csv[1..]
+    csv_patients = CSV.read(CSV_PATH, col_sep: ';')[1..]
 
     converted_values = csv_patients.map do |patient|
       patient.map { |attr| "\'#{serialize_values(attr)}\'" }.join(',')
@@ -51,11 +54,6 @@ class MedicalRecordImporter
   def prepare_attributes
     csv_attributes = CSV.read(CSV_PATH, col_sep: ';')[0]
     @attributes = csv_attributes.map { |attr| serialize_attribute(attr) }
-  end
-
-  def table_already_exists
-    table_existence = @conn.exec('SELECT EXISTS (SELECT FROM pg_tables WHERE tablename = \'medical_record\')')
-    table_existence[0]['exists'] == 't'
   end
 
   def serialize_attribute(str)
