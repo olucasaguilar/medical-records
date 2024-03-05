@@ -6,7 +6,7 @@ docker compose run --rm database
 ```
 
 ### Preparando o Banco de Dados
-Para preparar o banco de dados, o servidor precisa estar em execução.
+Para preparar o banco de dados, o comando acima precisa estar em execução.
 ```bash
 docker compose run --rm prepare_database
 ```
