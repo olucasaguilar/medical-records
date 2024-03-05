@@ -3,13 +3,13 @@ require 'pg'
 class MedicalRecord
   def self.all
     begin
-      conn = connect_database
-      medical_records = conn.exec('SELECT * FROM medical_record')
-      records_array = medical_records.map do |record|
-        Hash[medical_records.fields.zip(record.values)]
+      conn = connection_database
+      query_result = conn.exec('SELECT * FROM medical_record')
+      medical_records = query_result.map do |record|
+        Hash[query_result.fields.zip(record.values)]
       end
       conn.close
-      records_array
+      medical_records
     rescue PG::Error => e
       []
     end
@@ -17,7 +17,7 @@ class MedicalRecord
 
   private
 
-  def self.connect_database
+  def self.connection_database
     PG.connect(
       host: 'postgres',
       user: 'postgres',
