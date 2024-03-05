@@ -19,6 +19,18 @@ services:
     networks:
       - network
 
+  server:
+    image: ruby
+    ports:
+      - 3000:3000
+    volumes:
+      - bundle:/usr/local/bundle
+      - .:/app
+    working_dir: /app
+    command: bash -c "bundle install && ruby server.rb"
+    networks:
+      - network
+
 volumes:
   pgdata:
   bundle:
