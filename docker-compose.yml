@@ -14,8 +14,8 @@ services:
     volumes:
       - bundle:/usr/local/bundle
       - .:/app
-    working_dir: /app/database
-    command: bash -c "bundle install && ruby prepare_database.rb"
+    working_dir: /app/bin
+    command: bash -c "bundle install && ruby import_from_csv_to_db.rb"
     networks:
       - network
 
