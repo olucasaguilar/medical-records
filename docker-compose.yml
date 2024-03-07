@@ -21,6 +21,17 @@ services:
     depends_on:
       - database
 
+  test_database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test_db
+    networks:
+      - network
+    volumes:
+      - test_pgdata:/var/lib/postgresql/data
+    hostname: test_postgres
+
   server:
     image: ruby
     ports:
@@ -39,10 +50,15 @@ services:
       - bundle:/usr/local/bundle
       - .:/app
     working_dir: /app/spec
+    networks:
+      - network
     command: bash -c "bundle install && rspec *"
+    depends_on:
+      - test_database
 
 volumes:
   pgdata:
+  test_pgdata:
   bundle:
 
 networks:

@@ -6,9 +6,9 @@ docker compose run --rm database
 ```
 
 ### Preparando o Banco de Dados
-Para preparar o banco de dados, o comando acima precisa estar em execução.
+Para preparar o banco de dados (o comando acima NÃO precisa estar em execução).
 ```bash
-docker compose run --rm prepare_database
+docker compose run --rm prepare_database && docker compose -f docker-compose.yml down --remove-orphans
 ```
 Este comando irá ler o arquivo CSV `data/data.csv` e popular o banco de dados.
 
@@ -20,11 +20,9 @@ docker compose run --rm --service-ports server
 ```
 Para iniciar o servidor, o banco de dados deve estar populado e em execução.
 
-<!-- informando da rota localhost:3000/tests que exibe todos os registros médicos, que são 3900 atualmente -->
 ### Rotas
 - `localhost:3000/tests` - Retorna todos os registros medicos em formato JSON. Atualmente contém 3900 registros.
 
-<!-- teste é tests no compose -->
 ## Testes
 
 ### Rodar os testes
@@ -32,4 +30,9 @@ Para iniciar o servidor, o banco de dados deve estar populado e em execução.
 docker compose run --rm tests
 ```
 
-Por enquanto, é necessário fechar o server manualmente após rodar os testes. Os resultados são exibidos logo em seguida.
+Para executar os testes e remover o container orfão logo em seguida:
+```bash
+docker compose run --rm tests && docker compose -f docker-compose.yml down --remove-orphans
+```
+
+Por enquanto em alguns testes, é necessário fechar o server manualmente após rodar os testes. Os resultados são exibidos logo em seguida.

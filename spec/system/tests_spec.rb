@@ -21,11 +21,24 @@ RSpec.describe 'App' do
 
       it 'there are records' do
         fake_return = [
-          { id: 1, name: 'John', age: 30 },
-          { id: 2, name: 'Jane', age: 25 },
-          { id: 3, name: 'Bob', age: 40 },
-          { id: 4, name: 'Alice', age: 35 },
-          { id: 5, name: 'Charlie', age: 45 }
+          {
+            cpf: "048.973.170-88",
+            nome_paciente: "Emilly Batista Neto",
+            email_paciente: "gerald.crona@ebert-quigley.com",
+            data_nascimento_paciente: "2001-03-11",
+            endereco_rua_paciente: "165 Rua Rafaela",
+            cidade_paciente: "Ituverava",
+            estado_patiente: "Alagoas",
+            crm_medico: "B000BJ20J4",
+            crm_medico_estado: "PI",
+            nome_medico: "Maria Luiza Pires",
+            email_medico: "denna@wisozk.biz",
+            token_resultado_exame: "IQCZ17",
+            data_exame: "2021-08-05",
+            tipo_exame: "hemácias",
+            limites_tipo_exame: "45-52",
+            resultado_tipo_exame: "97"
+          }
         ]
         allow(MedicalRecord).to receive(:all).and_return(fake_return)
 
@@ -34,7 +47,8 @@ RSpec.describe 'App' do
         expect(last_response.status).to eq(200)
         expect(last_response.headers['Content-Type']).to include('application/json')
         records = JSON.parse(last_response.body)
-        expect(records.count).to eq(5)
+        expect(records.count).to eq(1)
+        expect(records.first['cpf']).to eq('048.973.170-88')
       end
     end
   end
