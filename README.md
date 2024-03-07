@@ -3,7 +3,7 @@
 ### Executando o Banco de Dados (PostgreSQL)
 
 ```bash
-docker compose run --rm database
+bin/database
 ```
 
 Este comando deixa o Banco de Dados no ar para ser acessado pelo Servidor.
@@ -11,7 +11,7 @@ Este comando deixa o Banco de Dados no ar para ser acessado pelo Servidor.
 ### Executando o Servidor
 
 ```bash
-docker compose run --rm --service-ports server
+bin/server
 ```
 
 Após subir o servidor, para conseguir acessar as funcionalidades corretamente, o Banco de Dados deve estar e em execução (e de preferencia populado).
@@ -24,10 +24,10 @@ Após subir o servidor, para conseguir acessar as funcionalidades corretamente, 
 
 Para popular o banco de dados execute o comando a seguir. 
 
-*Atenção, o Banco de Dados NÃO precisa estar em execução, portanto, apenas o comando abaixo ja basta.
+Atenção: o Banco de Dados NÃO deve estar em execução.
 
 ```bash
-docker compose run --rm prepare_database && docker compose -f docker-compose.yml down --remove-orphans
+bin/populate_database
 ```
 
 Este comando irá ler o arquivo CSV `data/data.csv` e popular o banco de dados.
@@ -40,10 +40,10 @@ Em toda execução deste comando, a tabela do banco será apagada e criada novam
 
 Para executar os testes, execute o comando a seguir. 
 
-*Atenção, o Banco de Dados NÃO precisa estar em execução, portanto, apenas o comando abaixo ja basta.
+Atenção: o Banco de Dados NÃO deve estar em execução.
 
 ```bash
-docker compose run --rm tests && docker compose -f docker-compose.yml down --remove-orphans
+bin/run_tests
 ```
 
 Por enquanto após executar o comando de testes, é necessário fechar o server manualmente no teminal. Os resultados são exibidos logo em seguida.
