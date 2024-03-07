@@ -18,6 +18,8 @@ services:
     command: bash -c "bundle install && ruby import_from_csv_to_db.rb"
     networks:
       - network
+    depends_on:
+      - database
 
   server:
     image: ruby
@@ -30,6 +32,14 @@ services:
     command: bash -c "bundle install && ruby server.rb"
     networks:
       - network
+
+  tests:
+    image: ruby
+    volumes:
+      - bundle:/usr/local/bundle
+      - .:/app
+    working_dir: /app/spec
+    command: bash -c "bundle install && rspec *"
 
 volumes:
   pgdata:
