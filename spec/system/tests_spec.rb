@@ -13,6 +13,8 @@ RSpec.describe 'App' do
   describe 'GET /tests' do
     context 'successfully' do
       it 'there are no records' do
+        allow(MedicalRecord).to receive(:all).and_return([])
+
         get '/tests'
         
         expect(last_response.status).to eq(200)
