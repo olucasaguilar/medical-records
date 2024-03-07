@@ -8,8 +8,10 @@ get '/tests' do
   records.to_json
 end
 
-Rack::Handler::Puma.run(
-  Sinatra::Application,
-  Port: 3000,
-  Host: '0.0.0.0'
-)
+if ENV['RACK_ENV'] != 'test'
+  Rack::Handler::Puma.run(
+    Sinatra::Application,
+    Port: 3000,
+    Host: '0.0.0.0'
+  )
+end

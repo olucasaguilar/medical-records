@@ -1,3 +1,5 @@
+ENV['RACK_ENV'] = 'test'
+
 require_relative '../../server.rb'
 require 'rack/test'
 
