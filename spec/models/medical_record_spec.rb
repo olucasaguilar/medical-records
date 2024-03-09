@@ -2,17 +2,13 @@ ENV['RACK_ENV'] = 'test'
 
 require 'pg'
 require 'rack/test'
-require '../app/models/medical_record.rb'
+require '../app/models/medical_record'
+require '../db/database_connection'
 
 RSpec.describe MedicalRecord  do
   describe '.all' do
     before(:each) do
-      @conn = PG.connect(
-        dbname: 'test_db',
-        user: 'postgres',
-        password: 'postgres',
-        host: 'test_postgres'
-      )
+      @conn = DatabaseConnection.new
 
       @conn.exec("CREATE TABLE medical_record (id SERIAL PRIMARY KEY, name VARCHAR(255), condition VARCHAR(255))")
     end
@@ -22,22 +18,24 @@ RSpec.describe MedicalRecord  do
       @conn.close if @conn
     end
 
-    it 'returns all medical records' do
-      @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('John Doe', 'Headache')")
-      @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('Jane Smith', 'Fever')")
+    context 'returns all medical records if connects to database' do
+      it 'and there are instances' do
+        @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('John Doe', 'Headache')")
+        @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('Jane Smith', 'Fever')")
 
-      medical_records = MedicalRecord.all(@conn)
+        medical_records = MedicalRecord.all(@conn)
 
-      expect(medical_records.length).to eq(2)
-      expect(medical_records[0]['name']).to eq('John Doe')
-      expect(medical_records[1]['condition']).to eq('Fever')
-    end
+        expect(medical_records.length).to eq(2)
+        expect(medical_records[0]['name']).to eq('John Doe')
+        expect(medical_records[1]['condition']).to eq('Fever')
+      end
 
-    it 'returns there are no medical records' do
-      medical_records = MedicalRecord.all(@conn)
+      it 'and there are no instances' do
+        medical_records = MedicalRecord.all(@conn)
 
-      expect(medical_records.length).to eq(0)
-      expect(medical_records).to eq([])
+        expect(medical_records.length).to eq(0)
+        expect(medical_records).to eq([])
+      end
     end
 
     # erro na conexão
