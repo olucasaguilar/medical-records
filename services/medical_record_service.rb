@@ -1,12 +1,12 @@
 module MedicalRecordService
   class ImportCSV
-    require 'pg'
     require 'csv'
+    require_relative '../database/database_connection'
 
     DIACRITICS = [*0x1DC0..0x1DFF, *0x0300..0x036F, *0xFE20..0xFE2F].pack('U*')
 
     def initialize
-      connect_database
+      @db_conn = DatabaseConnection.new
     end
 
     def import(csv_path, reset_table = false)
@@ -19,16 +19,6 @@ module MedicalRecordService
 
     private
 
-    def connect_database
-      @conn = PG.connect(
-        host: 'postgres',
-        user: 'postgres',
-        dbname: 'postgres',
-        password: 'postgres'
-      )
-      puts 'Connected to database'
-    end
-
     def table_exists?
       query = <<~SQL
         SELECT EXISTS (
@@ -39,13 +29,13 @@ module MedicalRecordService
         )
       SQL
 
-      query_return = @conn.exec(query)
+      query_return = @db_conn.exec(query)
 
       query_return[0]['exists'] == 't'
     end
 
     def drop_table
-      @conn.exec('DROP TABLE IF EXISTS medical_record')
+      @db_conn.exec('DROP TABLE IF EXISTS medical_record')
       puts 'Table dropped'
     end
 
@@ -58,7 +48,7 @@ module MedicalRecordService
         CREATE TABLE medical_record (#{attribute_definitions})
       SQL
     
-      @conn.exec(create_table_query)
+      @db_conn.exec(create_table_query)
       puts 'Table created'
     end
     
@@ -85,7 +75,7 @@ module MedicalRecordService
     end
 
     def insert_into_database
-      @conn.exec("INSERT INTO medical_record (#{@attributes.join(', ')}) VALUES (#{@converted_values})")
+      @db_conn.exec("INSERT INTO medical_record (#{@attributes.join(', ')}) VALUES (#{@converted_values})")
       puts 'Data inserted'
     end
   end
