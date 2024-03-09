@@ -21,12 +21,12 @@ services:
     networks:
       - network
 
-  prepare_database:
+  populate_database:
     image: ruby
     volumes:
       - bundle:/usr/local/bundle
       - .:/app
-    working_dir: /app/bin
+    working_dir: /app/utils
     command: bash -c "bundle install && ruby import_from_csv_to_db.rb"
     networks:
       - network
