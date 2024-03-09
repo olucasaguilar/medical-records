@@ -6,7 +6,10 @@
 - [Executando o Servidor](#executando-o-servidor)
 - [Populando o Banco de Dados](#populando-o-banco-de-dados)
 - [Testes](#testes)
-- [Tratamento de Erros](#tratamento-de-erros)
+
+### Nota
+
+- Ao executar um comando pela primeira vez, pode levar alguns segundos a mais devido ao download das gems necessárias.
 
 ## Executando o Banco de Dados (PostgreSQL)
 
@@ -54,13 +57,3 @@ bin/run_tests
 ```
 
 Por enquanto após executar o comando de testes, é necessário fechar o `server` manualmente no teminal. Os resultados são exibidos logo em seguida.
-
-## Tratamento de Erros
-
-Caso dê algum conflito de portas relacionadas ao PostgreSQL, execute o seguinte comando:
-
- ```bash
- sudo service postgresql stop
- ```
-
- Isso pode ser necessário caso o `servidor` esteja em execução na maquina e também no `container`.
