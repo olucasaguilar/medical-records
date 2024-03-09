@@ -1,7 +1,7 @@
 module MedicalRecordService
   class ImportCSV
     require 'csv'
-    require_relative '../database/database_connection'
+    require_relative '../../db/database_connection'
 
     DIACRITICS = [*0x1DC0..0x1DFF, *0x0300..0x036F, *0xFE20..0xFE2F].pack('U*')
 

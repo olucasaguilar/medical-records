@@ -2,7 +2,7 @@ ENV['RACK_ENV'] = 'test'
 
 require 'pg'
 require 'rack/test'
-require '../models/medical_record.rb'
+require '../app/models/medical_record.rb'
 
 RSpec.describe MedicalRecord  do
   describe '.all' do

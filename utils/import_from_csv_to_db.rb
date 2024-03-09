@@ -1,4 +1,4 @@
-require_relative '../services/medical_record_service'
+require_relative '../app/services/medical_record_service'
 
-csv_path = '../data/data.csv'
+csv_path = '../db/data/data.csv'
 MedicalRecordService::ImportCSV.new.import(csv_path, reset_table = true)

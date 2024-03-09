@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'rack/handler/puma'
-require_relative 'models/medical_record.rb'
+require_relative 'app/models/medical_record.rb'
 
 get '/tests' do
   content_type :json
