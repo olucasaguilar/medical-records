@@ -1,5 +1,5 @@
 services:
-  database:
+  database: &database
     image: postgres
     environment:
       - POSTGRES_PASSWORD=postgres
@@ -34,15 +34,9 @@ services:
       - database
 
   test_database:
-    image: postgres
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=test_db
-    networks:
-      - network
+    <<: *database
     volumes:
       - test_pgdata:/var/lib/postgresql/data
-    hostname: test_postgres
 
   tests:
     image: ruby

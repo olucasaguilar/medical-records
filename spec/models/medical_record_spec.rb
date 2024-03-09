@@ -4,18 +4,19 @@ require 'pg'
 require 'rack/test'
 require '../app/models/medical_record'
 require '../db/database_connection'
+require './helpers/database_helper'
 
 RSpec.describe MedicalRecord  do
   describe '.all' do
     before(:each) do
+      DatabaseHelper.wait_for_database
       @conn = DatabaseConnection.new
-
       @conn.exec("CREATE TABLE medical_record (id SERIAL PRIMARY KEY, name VARCHAR(255), condition VARCHAR(255))")
     end
 
     after(:each) do
       @conn.exec("DROP TABLE IF EXISTS medical_record")
-      @conn.close if @conn
+      @conn.close
     end
 
     context 'returns all medical records if connects to database' do

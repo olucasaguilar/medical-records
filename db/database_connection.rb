@@ -8,10 +8,13 @@ class DatabaseConnection
       dbname: 'postgres',
       password: 'postgres'
     )
-    puts 'Connected to database'
   end
 
   def exec(query)
     @conn.exec(query)
+  end
+
+  def close
+    @conn.close
   end
 end
