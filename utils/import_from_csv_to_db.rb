@@ -1,4 +1,4 @@
-require_relative '../models/medical_record_importer.rb'
+require_relative '../services/medical_record_service'
 
-importer = MedicalRecordImporter.new
-importer.import
+csv_path = '../data/data.csv'
+MedicalRecordService::ImportCSV.new.import(csv_path, reset_table = true)
