@@ -24,7 +24,7 @@ RSpec.describe MedicalRecord  do
         @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('John Doe', 'Headache')")
         @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('Jane Smith', 'Fever')")
 
-        medical_records = MedicalRecord.all(@conn)
+        medical_records = MedicalRecord.all
 
         expect(medical_records.length).to eq(2)
         expect(medical_records[0]['name']).to eq('John Doe')
@@ -32,7 +32,7 @@ RSpec.describe MedicalRecord  do
       end
 
       it 'and there are no instances' do
-        medical_records = MedicalRecord.all(@conn)
+        medical_records = MedicalRecord.all
 
         expect(medical_records.length).to eq(0)
         expect(medical_records).to eq([])
@@ -43,9 +43,9 @@ RSpec.describe MedicalRecord  do
     it 'return empty if cannot connect to database' do
       @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('John Doe', 'Headache')")
       @conn.exec("INSERT INTO medical_record (name, condition) VALUES ('Jane Smith', 'Fever')")
-      allow(@conn).to receive(:exec).and_raise(PG::Error)
+      allow(PG).to receive(:connect).and_raise(PG::Error)
 
-      medical_records = MedicalRecord.all(@conn)
+      medical_records = MedicalRecord.all
 
       expect(medical_records.length).to eq(0)
       expect(medical_records).to eq([])
