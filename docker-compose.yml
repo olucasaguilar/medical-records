@@ -3,8 +3,6 @@ services:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=postgres
-    networks:
-      - network
     volumes:
       - pgdata:/var/lib/postgresql/data
     hostname: postgres
@@ -18,8 +16,6 @@ services:
       - .:/app
     working_dir: /app
     command: bash -c "bundle install && ruby server.rb"
-    networks:
-      - network
 
   populate_database:
     image: ruby
@@ -28,8 +24,6 @@ services:
       - .:/app
     working_dir: /app/utils
     command: bash -c "bundle install && ruby import_from_csv_to_db.rb"
-    networks:
-      - network
     depends_on:
       - database
 
@@ -44,8 +38,6 @@ services:
       - bundle:/usr/local/bundle
       - .:/app
     working_dir: /app/spec
-    networks:
-      - network
     command: bash -c "bundle install && rspec *"
     depends_on:
       - test_database
@@ -54,6 +46,3 @@ volumes:
   pgdata:
   test_pgdata:
   bundle:
-
-networks:
-  network:
