@@ -4,10 +4,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
     hostname: postgres
 
-  server:
+  server: &server
     image: ruby
     ports:
       - 3000:3000
@@ -16,33 +16,29 @@ services:
       - .:/app
     working_dir: /app
     command: bash -c "bundle install && ruby server.rb -s puma -p 3000 -o '0.0.0.0'"
+    depends_on:
+      - database
 
   populate_database:
-    image: ruby
-    volumes:
-      - bundle:/usr/local/bundle
-      - .:/app
-    working_dir: /app/utils
-    command: bash -c "bundle install && ruby import_from_csv_to_db.rb"
+    <<: *server
+    ports: []
+    command: bash -c "bundle install && ruby utils/import_from_csv_to_db.rb"
     depends_on:
       - database
 
   test_database:
     <<: *database
     volumes:
-      - test_pgdata:/var/lib/postgresql/data
+      - test_database:/var/lib/postgresql/data
 
   tests:
-    image: ruby
-    volumes:
-      - bundle:/usr/local/bundle
-      - .:/app
-    working_dir: /app/spec
-    command: bash -c "bundle install && rspec *"
+    <<: *server
+    ports: []
+    command: bash -c "bundle install && rspec"
     depends_on:
       - test_database
 
 volumes:
-  pgdata:
-  test_pgdata:
+  database:
+  test_database:
   bundle:

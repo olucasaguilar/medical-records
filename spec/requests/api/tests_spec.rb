@@ -1,6 +1,4 @@
-ENV['RACK_ENV'] = 'test'
-
-require_relative '../../../server.rb'
+require './server'
 require 'rack/test'
 
 RSpec.describe 'App' do

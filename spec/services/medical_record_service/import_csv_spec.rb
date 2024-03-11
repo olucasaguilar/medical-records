@@ -1,12 +1,9 @@
-ENV['RACK_ENV'] = 'test'
-
 require 'pg'
-require 'rack/test'
 require 'csv'
-require '../app/services/medical_record_service.rb'
-require '../app/models/medical_record.rb'
-require '../db/database_connection'
-require './helpers/database_helper'
+require './app/services/medical_record_service'
+require './app/models/medical_record'
+require './db/database_connection'
+require './spec/helpers/database_helper'
 
 RSpec.describe MedicalRecordService::ImportCSV  do
   before(:each) do
@@ -22,7 +19,7 @@ RSpec.describe MedicalRecordService::ImportCSV  do
   describe '.import' do
     context 'successfully imports medical records from CSV to database' do
       it 'and the table does not exist yet' do
-        csv_path = 'support/data.csv'
+        csv_path = 'spec/support/data.csv'
         csv_lines = CSV.read(csv_path, col_sep: ';')[1..-1].length
 
         MedicalRecordService::ImportCSV.import(csv_path)
@@ -32,7 +29,7 @@ RSpec.describe MedicalRecordService::ImportCSV  do
 
       it 'and the table already exists' do
         @conn.exec("CREATE TABLE medical_record (cpf VARCHAR, nome_paciente VARCHAR)")
-        csv_path = 'support/data.csv'
+        csv_path = 'spec/support/data.csv'
         csv_lines = CSV.read(csv_path, col_sep: ';')[1..-1].length
 
         MedicalRecordService::ImportCSV.import(csv_path)
@@ -44,7 +41,7 @@ RSpec.describe MedicalRecordService::ImportCSV  do
         @conn.exec("CREATE TABLE medical_record (cpf VARCHAR, nome_paciente VARCHAR)")
         @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('12345678901', 'First Person')")  
         @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('32165498701', 'Second Person')")
-        csv_path = 'support/data.csv'
+        csv_path = 'spec/support/data.csv'
 
         reset_table = true
         MedicalRecordService::ImportCSV.import(csv_path, reset_table)
@@ -59,7 +56,7 @@ RSpec.describe MedicalRecordService::ImportCSV  do
         @conn.exec("CREATE TABLE medical_record (cpf VARCHAR, nome_paciente VARCHAR)")
         @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('12345678901', 'First Person')")  
         @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('32165498701', 'Second Person')")
-        csv_path = 'support/data.csv'
+        csv_path = 'spec/support/data.csv'
 
         reset_table = false
         MedicalRecordService::ImportCSV.import(csv_path, reset_table)
