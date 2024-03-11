@@ -7,8 +7,3 @@ get '/tests' do
   records = MedicalRecord.all
   records.to_json
 end
-
-get '/' do
-  content_type :html
-  File.open('app/views/index.html')
-end

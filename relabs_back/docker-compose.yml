@@ -7,18 +7,18 @@ services:
       - database:/var/lib/postgresql/data
     hostname: postgres
 
-  server: &server
+  server_back: &server_back
     image: ruby
     ports:
-      - 3000:3000
+      - 3001:3001
     volumes:
       - bundle:/usr/local/bundle
       - .:/app
     working_dir: /app
-    command: bash -c "bundle install && ruby server.rb -s puma -p 3000 -o '0.0.0.0'"
+    command: bash -c "bundle install && ruby server.rb -s puma -p 3001 -o '0.0.0.0'"
 
   populate_database:
-    <<: *server
+    <<: *server_back
     ports: []
     command: bash -c "bundle install && ruby utils/import_from_csv_to_db.rb"
     depends_on:
@@ -30,7 +30,7 @@ services:
       - test_database:/var/lib/postgresql/data
 
   tests:
-    <<: *server
+    <<: *server_back
     ports: []
     command: bash -c "bundle install && rspec"
     depends_on:

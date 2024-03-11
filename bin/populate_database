@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd relabs_back
+
 docker compose run --rm populate_database
 
 docker compose -f docker-compose.yml down --remove-orphans
