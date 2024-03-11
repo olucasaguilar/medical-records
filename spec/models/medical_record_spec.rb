@@ -1,7 +1,7 @@
 require 'pg'
 require './app/models/medical_record'
 require './db/database_connection'
-require './spec/helpers/database_helper'
+require './db/database_helper'
 
 RSpec.describe MedicalRecord  do
   describe '.all' do

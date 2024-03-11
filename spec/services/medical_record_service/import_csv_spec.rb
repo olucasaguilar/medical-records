@@ -3,7 +3,7 @@ require 'csv'
 require './app/services/medical_record_service'
 require './app/models/medical_record'
 require './db/database_connection'
-require './spec/helpers/database_helper'
+require './db/database_helper'
 
 RSpec.describe MedicalRecordService::ImportCSV  do
   before(:each) do
