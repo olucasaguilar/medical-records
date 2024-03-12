@@ -7,24 +7,24 @@ class MedicalRecord
               :endereco_rua_paciente, :cidade_paciente, :estado_patiente, :doctor
 
   def initialize(data)
-    @token_resultado_exame = data["token_resultado_exame"] || 'NULL'
-    @tipo_exame = data["tipo_exame"]   || 'NULL'
-    @limites_tipo_exame = data["limites_tipo_exame"]  || 'NULL'
-    @resultado_tipo_exame = data["resultado_tipo_exame"]  || 'NULL'
-    @data_exame = data["data_exame"]  || 'NULL'
-    @cpf = data["cpf"]  || 'NULL'
-    @nome_paciente = data["nome_paciente"]  || 'NULL'
-    @email_paciente = data["email_paciente"]  || 'NULL'
+    @token_resultado_exame =    data["token_resultado_exame"]     || 'NULL'
+    @tipo_exame =               data["tipo_exame"]                || 'NULL'
+    @limites_tipo_exame =       data["limites_tipo_exame"]        || 'NULL'
+    @resultado_tipo_exame =     data["resultado_tipo_exame"]      || 'NULL'
+    @data_exame =               data["data_exame"]                || 'NULL'
+    @cpf =                      data["cpf"]                       || 'NULL'
+    @nome_paciente =            data["nome_paciente"]             || 'NULL'
+    @email_paciente =           data["email_paciente"]            || 'NULL'
     @data_nascimento_paciente = data["data_nascimento_paciente"]  || 'NULL'
-    @endereco_rua_paciente = data["endereco_rua_paciente"]  || 'NULL'
-    @cidade_paciente = data["cidade_paciente"]  || 'NULL'
-    @estado_patiente = data["estado_patiente"]  || 'NULL'
+    @endereco_rua_paciente =    data["endereco_rua_paciente"]     || 'NULL'
+    @cidade_paciente =          data["cidade_paciente"]           || 'NULL'
+    @estado_patiente =          data["estado_patiente"]           || 'NULL'
     @doctor = {
-      crm_medico: data["crm_medico"] || 'NULL',
-      crm_medico_estado: data["crm_medico_estado"] || 'NULL',
-      nome_medico: data["nome_medico"] || 'NULL'
+      crm_medico:               data["crm_medico"]                || 'NULL',
+      crm_medico_estado:        data["crm_medico_estado"]         || 'NULL',
+      nome_medico:              data["nome_medico"]               || 'NULL'
     }
-    @tests = data["tests"]  || 'NULL'
+    @tests =                    data["tests"]                     || 'NULL'
   end
 
   def to_json(*_args)
