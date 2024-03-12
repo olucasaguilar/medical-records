@@ -1,18 +1,21 @@
 module MedicalRecordService
   class ImportCSV
     require 'csv'
+    require './app/models/medical_record'
     require_relative '../../db/database_connection'
 
     DIACRITICS = [*0x1DC0..0x1DFF, *0x0300..0x036F, *0xFE20..0xFE2F].pack('U*')
 
     def self.import(csv_path, reset_table = false)
       @db_conn = DatabaseConnection.new
+
       @csv_path = csv_path
-      drop_table if reset_table && table_exists?
-      set_table_attributes
-      create_table unless table_exists?
+      MedicalRecordService::DropTable.drop(@db_conn) if reset_table && table_exists?
+      MedicalRecordService::CreateTable.create(@db_conn) unless table_exists?
       prepare_dataset
       insert_into_database
+
+      @db_conn.close
     end
 
     class << self
@@ -33,23 +36,9 @@ module MedicalRecordService
         query_return[0]['exists'] == 't'
       end
 
-      def drop_table
-        @db_conn.exec('DROP TABLE IF EXISTS medical_record')
-      end
-
-      def create_table
-        attribute_definitions = @attributes.map { |attr| "#{attr} VARCHAR" }.join(", ")
-      
-        create_table_query = <<~SQL 
-          CREATE TABLE medical_record (#{attribute_definitions})
-        SQL
-      
-        @db_conn.exec(create_table_query)
-      end
-
       def set_table_attributes
         csv_attributes = CSV.read(@csv_path, col_sep: ';')[0]
-        @attributes = csv_attributes.map { |attr| serialize_attribute(attr) }
+        MedicalRecord.attributes = csv_attributes.map { |attr| serialize_attribute(attr) }
       end
       
       def serialize_attribute(str)
@@ -74,8 +63,26 @@ module MedicalRecordService
       end
 
       def insert_into_database
-        @db_conn.exec("INSERT INTO medical_record (#{@attributes.join(', ')}) VALUES (#{@converted_values})")
+        @db_conn.exec("INSERT INTO medical_record (#{MedicalRecord.attributes.join(', ')}) VALUES (#{@converted_values})")
       end
+    end
+  end
+
+  class CreateTable
+    def self.create(conn)
+      attribute_definitions = MedicalRecord.attributes.map { |attr| "#{attr} VARCHAR" }.join(", ")
+      
+      create_table_query = <<~SQL 
+        CREATE TABLE medical_record (#{attribute_definitions})
+      SQL
+    
+      conn.exec(create_table_query)
+    end
+  end
+
+  class DropTable
+    def self.drop(conn)
+      conn.exec("DROP TABLE IF EXISTS medical_record")
     end
   end
 end

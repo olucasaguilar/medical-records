@@ -12,7 +12,7 @@ RSpec.describe MedicalRecordService::ImportCSV  do
   end
 
   after(:each) do
-    @conn.exec("DROP TABLE IF EXISTS medical_record")
+    MedicalRecordService::DropTable.drop(@conn)
     @conn.close
   end
 
@@ -28,7 +28,7 @@ RSpec.describe MedicalRecordService::ImportCSV  do
       end
 
       it 'and the table already exists' do
-        @conn.exec("CREATE TABLE medical_record (cpf VARCHAR, nome_paciente VARCHAR)")
+        MedicalRecordService::CreateTable.create(@conn)
         csv_path = 'spec/support/data.csv'
         csv_lines = CSV.read(csv_path, col_sep: ';')[1..-1].length
 
@@ -38,9 +38,12 @@ RSpec.describe MedicalRecordService::ImportCSV  do
       end
 
       it 'reseting the table' do
-        @conn.exec("CREATE TABLE medical_record (cpf VARCHAR, nome_paciente VARCHAR)")
-        @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('12345678901', 'First Person')")  
-        @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('32165498701', 'Second Person')")
+        MedicalRecordService::CreateTable.create(@conn)
+        data_1 = { 'nome_paciente' => 'First Person', 'token_resultado_exame' => 'AA1' }
+        data_2 = { 'nome_paciente' => 'Second Person', 'token_resultado_exame' => 'BB2' }
+        mr1 = MedicalRecord.new(data_1)
+        mr2 = MedicalRecord.new(data_2)
+        MedicalRecord.insert_into_database(@conn, [mr1, mr2])
         csv_path = 'spec/support/data.csv'
 
         reset_table = true
@@ -53,9 +56,12 @@ RSpec.describe MedicalRecordService::ImportCSV  do
       end
 
       it 'not reseting the table' do
-        @conn.exec("CREATE TABLE medical_record (cpf VARCHAR, nome_paciente VARCHAR)")
-        @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('12345678901', 'First Person')")  
-        @conn.exec("INSERT INTO medical_record (cpf, nome_paciente) VALUES ('32165498701', 'Second Person')")
+        MedicalRecordService::CreateTable.create(@conn)
+        data_1 = { 'nome_paciente' => 'First Person', 'token_resultado_exame' => 'AA1' }
+        data_2 = { 'nome_paciente' => 'Second Person', 'token_resultado_exame' => 'BB2' }
+        mr1 = MedicalRecord.new(data_1)
+        mr2 = MedicalRecord.new(data_2)
+        MedicalRecord.insert_into_database(@conn, [mr1, mr2])
         csv_path = 'spec/support/data.csv'
 
         reset_table = false
