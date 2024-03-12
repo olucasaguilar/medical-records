@@ -2,16 +2,12 @@ require 'pg'
 require_relative '../../db/database_connection'
 
 class MedicalRecord
-  attr_reader :token_resultado_exame, :tipo_exame, :limites_tipo_exame, :resultado_tipo_exame,
-              :data_exame, :cpf, :nome_paciente, :email_paciente, :data_nascimento_paciente,
-              :endereco_rua_paciente, :cidade_paciente, :estado_patiente, :doctor
+  attr_reader :cpf, :nome_paciente, :email_paciente, :data_nascimento_paciente, :endereco_rua_paciente, 
+              :cidade_paciente, :estado_patiente, :crm_medico, :crm_medico_estado, :nome_medico,
+              :email_medico, :token_resultado_exame, :data_exame, :tipo_exame, :limites_tipo_exame,  
+              :resultado_tipo_exame, :tests
 
   def initialize(data)
-    @token_resultado_exame =    data["token_resultado_exame"]     || 'NULL'
-    @tipo_exame =               data["tipo_exame"]                || 'NULL'
-    @limites_tipo_exame =       data["limites_tipo_exame"]        || 'NULL'
-    @resultado_tipo_exame =     data["resultado_tipo_exame"]      || 'NULL'
-    @data_exame =               data["data_exame"]                || 'NULL'
     @cpf =                      data["cpf"]                       || 'NULL'
     @nome_paciente =            data["nome_paciente"]             || 'NULL'
     @email_paciente =           data["email_paciente"]            || 'NULL'
@@ -19,20 +15,21 @@ class MedicalRecord
     @endereco_rua_paciente =    data["endereco_rua_paciente"]     || 'NULL'
     @cidade_paciente =          data["cidade_paciente"]           || 'NULL'
     @estado_patiente =          data["estado_patiente"]           || 'NULL'
-    @doctor = {
-      crm_medico:               data["crm_medico"]                || 'NULL',
-      crm_medico_estado:        data["crm_medico_estado"]         || 'NULL',
-      nome_medico:              data["nome_medico"]               || 'NULL'
-    }
+    @crm_medico =               data["crm_medico"]                || 'NULL'
+    @crm_medico_estado =        data["crm_medico_estado"]         || 'NULL'
+    @nome_medico =              data["nome_medico"]               || 'NULL'
+    @email_medico =             data["email_medico"]              || 'NULL'
+    @token_resultado_exame =    data["token_resultado_exame"]     || 'NULL'
+    @data_exame =               data["data_exame"]                || 'NULL'
+    @tipo_exame =               data["tipo_exame"]                || 'NULL'
+    @limites_tipo_exame =       data["limites_tipo_exame"]        || 'NULL'
+    @resultado_tipo_exame =     data["resultado_tipo_exame"]      || 'NULL'
     @tests =                    data["tests"]                     || 'NULL'
   end
 
   def to_json(*_args)
     {
       token_resultado_exame: @token_resultado_exame,
-      tipo_exame: @tipo_exame,
-      limites_tipo_exame: @limites_tipo_exame,
-      resultado_tipo_exame: @resultado_tipo_exame,
       data_exame: @data_exame,
       cpf: @cpf,
       nome_paciente: @nome_paciente,
@@ -41,7 +38,12 @@ class MedicalRecord
       endereco_rua_paciente: @endereco_rua_paciente,
       cidade_paciente: @cidade_paciente,
       estado_patiente: @estado_patiente,
-      doctor: @doctor,
+      doctor: {
+        crm_medico: @crm_medico,
+        crm_medico_estado: @crm_medico_estado,
+        nome_medico: @nome_medico,
+        email_medico: @email_medico
+      },
       tests: @tests
     }.to_json
   end
@@ -105,7 +107,7 @@ class MedicalRecord
           resultado_tipo_exame: record["resultado_tipo_exame"]
         }
       end
-      data = records.first
+      data = records.first.except("tipo_exame", "limites_tipo_exame", "resultado_tipo_exame")
       data["tests"] = tests
       MedicalRecord.new(data)
     end
