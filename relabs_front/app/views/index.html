@@ -1,9 +1,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Exames médicos</title>
+  <style>
+    
+  </style>
 </head>
 <body>
   <h1>Exames médicos</h1>
+  
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <label for="file">Enviar arquivo CSV</label>
+    <input type="file" id="file" name="csv_file"/>
+    <button>Enviar</button>
+  </form>
   
   <script src="main.js"></script>
 </body>

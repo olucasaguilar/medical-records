@@ -27,7 +27,7 @@ bin/database
 
 Este comando deixa o Banco de Dados no ar para ser acessado pelo Servidor.
 
-## Executando o Servidor
+## Executando os Servidores
 
 ### Back-end
 
@@ -37,9 +37,20 @@ bin/server_back
 
 Após subir o servidor back-end, para ele funcionar corretamente, o Banco de Dados deve estar e em execução (e de preferencia populado).
 
-#### Rotas
+#### Rotas API
 
-- `localhost:3001/tests` - Retorna todos os registros medicos em formato JSON.
+##### Retorna todos os registros médicos em formato JSON:
+- **GET** → `localhost:3001/tests`
+
+##### Recebe um arquivo CSV de exames e grava no banco de dados:
+- **POST** → `localhost:3001/tests`
+
+Corpo da requisição: 
+```json
+{ 
+  "csv_file": "file.csv" 
+}
+```
 
 ### Front-end
 

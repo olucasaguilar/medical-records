@@ -49,6 +49,28 @@ fetch(url).
         text-align: center;
         margin-top: 40px;
       }
+
+      form {
+        text-align: center;
+        margin: 0 auto;
+        max-width: 300px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        margin-bottom: 15px;
+      }
+  
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+  
+      input[type="file"] {
+        display: block;
+        margin: 0 auto 10px auto;
+      }
     `;
     document.head.appendChild(styleElement);
     
@@ -132,7 +154,7 @@ fetch(url).
     })
   }).
   then(() => {
-    document.querySelector('body').appendChild(fragment);
+    document.body.appendChild(fragment);
   }).
   catch((error) => {
     console.log(error);

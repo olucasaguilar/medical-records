@@ -13,7 +13,7 @@ post '/tests' do
   content_type :json
   response.headers['Access-Control-Allow-Origin'] = '*'
   
-  MedicalRecordService::ImportCSV.import(params['csv_file'][:tempfile])
+  MedicalRecordService::ImportCSV.import(params['csv_file']['tempfile'])
   
   status 201
   { message: 'Importação realizada com sucesso!' }.to_json
