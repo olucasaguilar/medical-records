@@ -21,8 +21,10 @@ post '/tests' do
   content_type :json
   response.headers['Access-Control-Allow-Origin'] = '*'
   
+  if params['csv_file'].nil?
+    return status 400; { message: 'Falha ao realizar a importação!' }.to_json
+  end
+
   MedicalRecordService::ImportCSV.import(params['csv_file']['tempfile'])
-  
-  status 201
-  { message: 'Importação realizada com sucesso!' }.to_json
+  status 201; { message: 'Importação realizada com sucesso!' }.to_json
 end

@@ -8,10 +8,10 @@
 <body>
   <h1>Exames médicos</h1>
   
-  <form action="/upload" method="post" enctype="multipart/form-data">
+  <form id="form" action="http://localhost:3001/tests" method="post" enctype="multipart/form-data">
     <label for="file">Enviar arquivo CSV</label>
     <input type="file" id="file" name="csv_file"/>
-    <button>Enviar</button>
+    <button type="button" onclick="submitForm()">Enviar</button>
   </form>
   
   <script src="main.js"></script>
