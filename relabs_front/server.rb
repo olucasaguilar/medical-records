@@ -1,6 +1,4 @@
 require 'sinatra'
-require 'uri'
-require 'net/http'
 
 get '/' do
   content_type :html

@@ -36,7 +36,7 @@ function submitFormToken() {
     fragment.appendChild(recordElement);
   }).
   then(() => {
-    document.body.insertBefore(fragment, document.scripts[0]);
+    document.getElementsByClassName('cards')[0].appendChild(fragment);
   }).
   catch((error) => {
     console.log(error);
@@ -57,7 +57,7 @@ function fetchAndRenderData() {
       });
     }).
     then(() => {
-      document.body.insertBefore(fragment, document.scripts[0]);
+      document.getElementsByClassName('cards')[0].appendChild(fragment);
     }).
     catch((error) => {
       console.log(error);
