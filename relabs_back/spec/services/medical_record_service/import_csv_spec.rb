@@ -20,9 +20,10 @@ RSpec.describe MedicalRecordService::ImportCSV  do
     context 'successfully imports medical records from CSV to database' do
       it 'and the table does not exist yet' do
         csv_path = 'spec/support/data.csv'
-        csv_lines = CSV.read(csv_path, col_sep: ';')[1..-1].length
+        csv_file_patients = CSV.read(csv_path, col_sep: ';')[1..-1]
+        csv_lines = csv_file_patients.length
 
-        MedicalRecordService::ImportCSV.import(csv_path)
+        MedicalRecordService::ImportCSV.import(csv_file_patients)
 
         expect(MedicalRecord.all.length).to eq(csv_lines)
       end
@@ -30,9 +31,10 @@ RSpec.describe MedicalRecordService::ImportCSV  do
       it 'and the table already exists' do
         MedicalRecordService::CreateTable.create(@conn)
         csv_path = 'spec/support/data.csv'
-        csv_lines = CSV.read(csv_path, col_sep: ';')[1..-1].length
+        csv_file_patients = CSV.read(csv_path, col_sep: ';')[1..-1]
+        csv_lines = csv_file_patients.length
 
-        MedicalRecordService::ImportCSV.import(csv_path)
+        MedicalRecordService::ImportCSV.import(csv_file_patients)
 
         expect(MedicalRecord.all.length).to eq(csv_lines)
       end
@@ -45,9 +47,10 @@ RSpec.describe MedicalRecordService::ImportCSV  do
         mr2 = MedicalRecord.new(data_2)
         MedicalRecord.insert_into_database(@conn, [mr1, mr2])
         csv_path = 'spec/support/data.csv'
+        csv_file_patients = CSV.read(csv_path, col_sep: ';')[1..-1]
 
         reset_table = true
-        MedicalRecordService::ImportCSV.import(csv_path, reset_table)
+        MedicalRecordService::ImportCSV.import(csv_file_patients, reset_table)
 
         medical_records_names = MedicalRecord.all_names
         expect(medical_records_names.length).not_to eq(5)
@@ -63,9 +66,10 @@ RSpec.describe MedicalRecordService::ImportCSV  do
         mr2 = MedicalRecord.new(data_2)
         MedicalRecord.insert_into_database(@conn, [mr1, mr2])
         csv_path = 'spec/support/data.csv'
+        csv_file_patients = CSV.read(csv_path, col_sep: ';')[1..-1]
 
         reset_table = false
-        MedicalRecordService::ImportCSV.import(csv_path, reset_table)
+        MedicalRecordService::ImportCSV.import(csv_file_patients, reset_table)
 
         medical_records_names = MedicalRecord.all_names
         expect(medical_records_names.length).to eq(5)

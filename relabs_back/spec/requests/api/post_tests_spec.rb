@@ -11,9 +11,9 @@ RSpec.describe 'POST /tests' do
 
   context 'successfully' do
     it 'imports tests from csv upload' do
-      tests_service_importer_spy = spy(MedicalRecordService::ImportCSV)
-      stub_const('MedicalRecordService::ImportCSV', tests_service_importer_spy)
-      allow(tests_service_importer_spy).to receive(:import)
+      import_tests_job_spy = spy(ImportTestsJob)
+      stub_const('ImportTestsJob', import_tests_job_spy)
+      allow(import_tests_job_spy).to receive(:perform_async)
       file_path = 'spec/support/data.csv'
       csv_file = Rack::Test::UploadedFile.new(file_path, 'text/csv')
 
@@ -23,7 +23,7 @@ RSpec.describe 'POST /tests' do
       expect(last_response.headers['Content-Type']).to include('application/json')
       response = JSON.parse(last_response.body)
       expect(response['message']).to eq('Importação realizada com sucesso!')
-      expect(tests_service_importer_spy).to have_received(:import)
+      expect(import_tests_job_spy).to have_received(:perform_async)
     end
   end
 end

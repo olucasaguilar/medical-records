@@ -3,3 +3,5 @@
 cd relabs_back
 
 docker compose run --rm --service-ports server
+
+docker compose -f docker-compose.yml down --remove-orphans

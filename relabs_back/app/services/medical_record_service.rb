@@ -4,13 +4,12 @@ module MedicalRecordService
     require './app/models/medical_record'
     require_relative '../../db/database_connection'
 
-    def self.import(csv_path, reset_table = false)
+    def self.import(csv_file_patients, reset_table = false)
       @db_conn = DatabaseConnection.new
 
-      @csv_path = csv_path
       MedicalRecordService::DropTable.drop(@db_conn) if reset_table && table_exists?
       MedicalRecordService::CreateTable.create(@db_conn) unless table_exists?
-      insert_records_into_database
+      insert_records_into_database(csv_file_patients)
 
       @db_conn.close
     end
@@ -32,10 +31,8 @@ module MedicalRecordService
         query_return[0]['exists'] == 't'
       end
 
-      def insert_records_into_database
-        csv_patients = CSV.read(@csv_path, col_sep: ';')[1..]
-
-        medical_records = csv_patients.map do |patient|
+      def insert_records_into_database(csv_file_patients)
+        medical_records = csv_file_patients.map do |patient|
           patient = patient.map { |attr| "#{@db_conn.escape(attr)}" }
           data = Hash[MedicalRecord.attributes.zip(patient)]
           MedicalRecord.new(data)

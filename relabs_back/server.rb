@@ -1,6 +1,7 @@
 require 'sinatra'
 require './app/models/medical_record'
 require './app/services/medical_record_service'
+require './app/jobs/import_tests_job'
 
 get '/tests' do
   content_type :json
@@ -24,7 +25,8 @@ post '/tests' do
   if params['csv_file'].nil?
     return status 400; { message: 'Falha ao realizar a importação!' }.to_json
   end
-
-  MedicalRecordService::ImportCSV.import(params['csv_file']['tempfile'])
+  
+  csv_file_patients = CSV.read(params['csv_file']['tempfile'], col_sep: ';')[1..-1]
+  ImportTestsJob.perform_async(csv_file_patients)
   status 201; { message: 'Importação realizada com sucesso!' }.to_json
 end

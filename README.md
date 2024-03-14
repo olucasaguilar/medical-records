@@ -4,6 +4,7 @@
 
 - [Executando o Banco de Dados (PostgreSQL)](#executando-o-banco-de-dados-postgresql)
 - [Executando os Servidores](#executando-os-servidores)
+- [Exeutando os Jobs](#executando-os-jobs)
 - [Populando o Banco de Dados](#populando-o-banco-de-dados)
 - [Testes](#testes)
 
@@ -17,22 +18,34 @@
 - `bin/server_front` - Executa o servidor front-end
 - `bin/server_back` - Executa o servidor back-end
 - `bin/populate_database` - Popula o banco de dados pela primeira vez
-- `bin/run_tests` - Executa os testes
+- `bin/tests` - Executa os testes
 
 ### Sugestão de primeiros passos
 
-1. Execute os testes:
-   - `bin/run_tests`
-2. Execute o Banco de Dados e servidores (e entre na rota `:3000/`) para se abituar com a interface sem o banco populado:
-   - `bin/database`
-   - `bin/server_back`
-   - `bin/server_front`
-3. Feche o que foi aberto anteriormente, popule o Banco de Dados e depois refaça os comandos do passo 2:
-   - `bin/populate_database`
-
-### Extras
-
-- `docker volume rm relabs_back_database` - Caso queira resetar os dados do Banco de Dados
+#### 1- Execute os testes:
+   - `bin/tests`
+#### 2- Se abituando com a interface sem o banco populado:
+   - Execute o Banco de Dados e Servidores ao mesmo tempo:
+      - `bin/database`
+      - `bin/server_back`
+      - `bin/server_front`
+   - Entre na rota `localhost:3000/`
+#### 3- Visualizando interface com dados populados:
+   - Feche o que foi aberto anteriormente
+   - Popule o Banco de Dados
+      - `bin/populate_database`
+   - Refaça os comandos do passo 2
+#### 4- Inserindo dados manuelmente através de UPLOAD na página HTML
+   - Feche o que foi aberto anteriormente
+   - Resete o Banco de Dados
+      - `docker volume rm relabs_back_database`
+   - Execute os comandos do passo 2
+   - Execute os jobs
+      - `bin/jobs`
+   - Entre na rota principal da aplicação front-end
+      - `:3000/`
+   - Faça upload de um arquivo CSV manualmente através do botão na página
+   - Recarregue a página e procure pelo exame na listagem.
 
 ## Executando o Banco de Dados (PostgreSQL)
 
@@ -82,6 +95,14 @@ Após subir o servidor front-end, para ele funcionar corretamente, o servidor ba
 
 - `localhost:3000` - Exibe o resultado da consulta da API do back-end.
 
+## Executando os Jobs
+
+```bash
+bin/jobs
+```
+
+Para os jobs funcionarem corretamente, certifique que o servidor back-end esteja em execução.
+
 ## Populando o Banco de Dados
 
 Para popular o banco de dados execute o comando a seguir. 
@@ -103,5 +124,5 @@ Para executar os testes, execute o comando a seguir.
 Atenção: o Banco de Dados e os servidores NÃO devem estar em execução.
 
 ```bash
-bin/run_tests
+bin/tests
 ```
