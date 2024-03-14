@@ -9,10 +9,25 @@ services:
     working_dir: /app
     command: bash -c "bundle install && ruby server.rb -s puma -p 3000 -o '0.0.0.0'"
 
+  chrome:
+    image: browserless/chrome:1.31-chrome-stable
+    ports:
+      - '3333:3333'
+    volumes:
+      - .:/app:cached
+    environment:
+      PORT: 3333
+    hostname: chrome
+
   tests:
     <<: *server
     ports: []
     command: bash -c "bundle install && rspec"
+    links:
+      - "server:server"
+    depends_on:
+      - chrome
+      - server
 
 volumes:
   bundle:

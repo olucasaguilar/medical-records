@@ -18,12 +18,12 @@
 - `bin/server_front` - Executa o servidor front-end
 - `bin/server_back` - Executa o servidor back-end
 - `bin/populate_database` - Popula o banco de dados pela primeira vez
-- `bin/tests` - Executa os testes
+- `bin/tests_back` - Executa os testes
 
 ### Sugestão de primeiros passos
 
 #### 1- Execute os testes:
-   - `bin/tests`
+   - `bin/tests_back`
 #### 2- Se abituando com a interface sem o banco populado:
    - Execute o Banco de Dados e Servidores ao mesmo tempo:
       - `bin/database`
@@ -124,5 +124,5 @@ Para executar os testes, execute o comando a seguir.
 Atenção: o Banco de Dados e os servidores NÃO devem estar em execução.
 
 ```bash
-bin/tests
+bin/tests_back
 ```
