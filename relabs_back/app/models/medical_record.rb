@@ -88,6 +88,15 @@ class MedicalRecord
     conn.exec("INSERT INTO medical_record (#{attributes}) VALUES (#{values})")
   end
 
+  def self.find(token)
+    begin
+      medical_records = all
+      medical_records.find { |record| record.token_resultado_exame == token }
+    rescue PG::Error => e
+      nil
+    end
+  end
+
   private
 
   def self.get_raw_records
