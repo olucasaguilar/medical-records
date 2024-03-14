@@ -1,5 +1,5 @@
-function submitForm() {
-  var form = document.getElementById('form');
+function submitFormCSV() {
+  var form = document.getElementById('form_csv');
   var formData = new FormData(form);
 
   fetch(form.action, {
@@ -11,6 +11,37 @@ function submitForm() {
   existingCards.forEach(card => card.remove());
   form.reset();
   fetchAndRenderData();
+}
+
+function submitFormToken() {
+  var form = document.getElementById('form_token');
+  var token = form.querySelector('#token').value;
+
+  const fragment = new DocumentFragment();
+  const url = `http://localhost:3001/tests/search?token=${token}`;
+
+  const existingCards = document.querySelectorAll('.card');
+  existingCards.forEach(card => card.remove());
+  form.reset();
+
+  fetch(url, {
+    method: form.method
+  }).
+  then((response) => response.json()).
+  then((data) => {
+    if (data === null) {
+      return fetchAndRenderData();
+    }
+    const recordElement = createRecordElement(data, 0);
+    fragment.appendChild(recordElement);
+  }).
+  then(() => {
+    document.body.appendChild(fragment);
+  }).
+  catch((error) => {
+    console.log(error);
+    fetchAndRenderData();
+  });
 }
 
 function fetchAndRenderData() {
@@ -157,6 +188,12 @@ const styleContent = `
     margin-top: 40px;
   }
 
+  .forms-container {
+    display: flex;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
   form {
     text-align: center;
     margin: 0 auto;
@@ -165,6 +202,7 @@ const styleContent = `
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+    flex-grow: 1;
     margin-bottom: 15px;
   }
 
@@ -183,5 +221,15 @@ const styleContent = `
 const styleElement = document.createElement('style');
 styleElement.textContent = styleContent;
 document.head.appendChild(styleElement);
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('form').forEach(function(form) {
+    form.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+      }
+    });
+  });
+});
 
 fetchAndRenderData();
