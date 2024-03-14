@@ -19,6 +19,21 @@
 - `bin/populate_database` - Popula o banco de dados pela primeira vez
 - `bin/run_tests` - Executa os testes
 
+### Sugestão de primeiros passos
+
+1. Execute os testes:
+   - `bin/run_tests`
+2. Execute o Banco de Dados e servidores (e entre na rota `:3000/`) para se abituar com a interface sem o banco populado:
+   - `bin/database`
+   - `bin/server_back`
+   - `bin/server_front`
+3. Feche o que foi aberto anteriormente, popule o Banco de Dados e depois refaça os comandos do passo 2:
+   - `bin/populate_database`
+
+### Extras
+
+- `docker volume rm relabs_back_database` - Caso queira resetar os dados do Banco de Dados
+
 ## Executando o Banco de Dados (PostgreSQL)
 
 ```bash
