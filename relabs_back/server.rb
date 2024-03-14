@@ -9,6 +9,14 @@ get '/tests' do
   records.to_json
 end
 
+get '/tests/search' do
+  content_type :json
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  token = params['token']
+  record = MedicalRecord.find(token)
+  record.to_json
+end
+
 post '/tests' do
   content_type :json
   response.headers['Access-Control-Allow-Origin'] = '*'

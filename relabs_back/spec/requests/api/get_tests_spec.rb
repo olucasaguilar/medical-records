@@ -21,12 +21,13 @@ RSpec.describe 'GET /tests' do
     end
 
     it 'and there are records' do
-      fake_return = [
-        {
-          cpf: "048.973.170-88",
-          nome_paciente: "Emilly Batista Neto"
-        }
-      ]
+      data_1 = { 'nome_paciente' => 'João', 'cpf' => '111.111.111-11',  'token_resultado_exame' => 'AAA' }
+      data_2 = { 'nome_paciente' => 'Pedro', 'cpf' => '222.222.222-22',  'token_resultado_exame' => 'BBB' }
+      data_3 = { 'nome_paciente' => 'Vitor', 'cpf' => '333.333.333-33',  'token_resultado_exame' => 'CCC' }
+      mr1 = MedicalRecord.new(data_1)
+      mr2 = MedicalRecord.new(data_2)
+      mr3 = MedicalRecord.new(data_3)
+      fake_return = [mr1, mr2, mr3]
       allow(MedicalRecord).to receive(:all).and_return(fake_return)
 
       get '/tests'
@@ -34,9 +35,33 @@ RSpec.describe 'GET /tests' do
       expect(last_response.status).to eq(200)
       expect(last_response.headers['Content-Type']).to include('application/json')
       records = JSON.parse(last_response.body)
-      expect(records.count).to eq(1)
-      expect(records.first['cpf']).to eq('048.973.170-88')
-      expect(records.first['nome_paciente']).to eq('Emilly Batista Neto')
+      expect(records.count).to eq(3)
+      expect(records[0]['cpf']).to eq('111.111.111-11')
+      expect(records[1]['cpf']).to eq('222.222.222-22')
+      expect(records[2]['cpf']).to eq('333.333.333-33')
+      expect(records[0]['nome_paciente']).to eq('João')
+      expect(records[1]['nome_paciente']).to eq('Pedro')
+      expect(records[2]['nome_paciente']).to eq('Vitor')
+      expect(records[0]['token_resultado_exame']).to eq('AAA')
+      expect(records[1]['token_resultado_exame']).to eq('BBB')
+      expect(records[2]['token_resultado_exame']).to eq('CCC')
+    end
+  end
+
+  context 'searching by token' do
+    it 'successfully' do
+      data_1 = { 'nome_paciente' => 'João', 'cpf' => '111.111.111-11',  'token_resultado_exame' => 'AAA' }
+      fake_return = MedicalRecord.new(data_1)
+      allow(MedicalRecord).to receive(:find).with('BBB').and_return(fake_return)
+
+      get '/tests/search?token=BBB'
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.headers['Content-Type']).to include('application/json')
+      record = JSON.parse(last_response.body)
+      expect(record['cpf']).to eq('111.111.111-11')
+      expect(record['nome_paciente']).to eq('João')
+      expect(record['token_resultado_exame']).to eq('AAA')
     end
   end
 end
