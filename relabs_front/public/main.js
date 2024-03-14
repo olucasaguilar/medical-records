@@ -15,7 +15,7 @@ function submitFormCSV() {
 
 function submitFormToken() {
   var form = document.getElementById('form_token');
-  var token = form.querySelector('#token').value;
+  var token = form.querySelector('#tokenInput').value;
 
   const fragment = new DocumentFragment();
   const url = `http://localhost:3001/tests/search?token=${token}`;
@@ -36,7 +36,7 @@ function submitFormToken() {
     fragment.appendChild(recordElement);
   }).
   then(() => {
-    document.body.appendChild(fragment);
+    document.body.insertBefore(fragment, document.scripts[0]);
   }).
   catch((error) => {
     console.log(error);
@@ -57,7 +57,7 @@ function fetchAndRenderData() {
       });
     }).
     then(() => {
-      document.body.appendChild(fragment);
+      document.body.insertBefore(fragment, document.scripts[0]);
     }).
     catch((error) => {
       console.log(error);
@@ -222,14 +222,12 @@ const styleElement = document.createElement('style');
 styleElement.textContent = styleContent;
 document.head.appendChild(styleElement);
 
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll('form').forEach(function(form) {
-    form.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-      }
-    });
-  });
+var tokenInput = document.getElementById("tokenInput");
+tokenInput.addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    submitFormToken();
+  }
 });
 
 fetchAndRenderData();
