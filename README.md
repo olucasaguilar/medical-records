@@ -3,7 +3,7 @@
 ## Cabeçalho
 
 - [Executando o Banco de Dados (PostgreSQL)](#executando-o-banco-de-dados-postgresql)
-- [Executando o Servidor](#executando-o-servidor)
+- [Executando os Servidores](#executando-os-servidores)
 - [Populando o Banco de Dados](#populando-o-banco-de-dados)
 - [Testes](#testes)
 
@@ -41,6 +41,9 @@ Após subir o servidor back-end, para ele funcionar corretamente, o Banco de Dad
 
 ##### Retorna todos os registros médicos em formato JSON:
 - **GET** → `localhost:3001/tests`
+
+##### Retorna um registro médico em formato JSON com base no token:
+- **GET** → `localhost:3001/tests/search?token=ABC123`
 
 ##### Recebe um arquivo CSV de exames e grava no banco de dados:
 - **POST** → `localhost:3001/tests`
