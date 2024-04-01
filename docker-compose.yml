@@ -5,7 +5,6 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - database:/var/lib/postgresql/data
-    hostname: postgres
 
   server: &server
     image: ruby
@@ -13,29 +12,19 @@ services:
       - 3001:3001
     volumes:
       - bundle:/usr/local/bundle
-      - .:/app
+      - ./relabs_back:/app
     working_dir: /app
     environment:
       - REDIS_URL=redis://redis:6379/0
     command: bash -c "bundle install && ruby server.rb -s puma -p 3001 -o '0.0.0.0'"
-    depends_on:
-      - redis
 
   redis:
     image: redis
-    hostname: redis
 
   sidekiq:
     <<: *server
     ports: []
     command: bash -c "bundle install && sidekiq -r ./app/jobs/import_tests_job.rb"
-
-  # populate_database:
-  #   <<: *server
-  #   ports: []
-  #   command: bash -c "bundle install && ruby utils/import_from_csv_to_db.rb"
-  #   depends_on:
-  #     - database
 
   # test_database:
   #   <<: *database
