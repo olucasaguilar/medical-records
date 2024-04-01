@@ -67,11 +67,11 @@ Em manutenção...
 docker compose up
 ```
 
-Este comando vai executar todos os serviços docker abaixo, que são responsáveis pelo frond-end da aplicação:
-- Banco de Dados (PostgreSQL)
-- Servidor
-- Redis
-- Sidekiq
+Este comando vai executar todos os serviços docker abaixo, que são responsáveis pelo back-end da aplicação:
+- database (banco de dados PostgreSQL)
+- server (servidor back-end)
+- redis (sistema de armazenamento em memória)
+- sidekiq (sistema de gerenciamento de filas de trabalhos em Ruby)
 
 ### Populando o Banco de Dados
 
