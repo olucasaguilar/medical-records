@@ -1,13 +1,12 @@
+require 'spec_helper'
 require 'pg'
 require 'csv'
 require './app/services/medical_record_service'
 require './app/models/medical_record'
 require './db/database_connection'
-require './db/database_helper'
 
 RSpec.describe MedicalRecordService::ImportCSV  do
   before(:each) do
-    DatabaseHelper.wait_for_database
     @conn = DatabaseConnection.new
   end
 

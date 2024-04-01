@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd relabs_back 
-
-docker compose run --rm database

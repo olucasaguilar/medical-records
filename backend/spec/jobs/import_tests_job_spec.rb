@@ -1,3 +1,4 @@
+require 'spec_helper'
 require './app/jobs/import_tests_job'
 require 'sidekiq/testing'
 

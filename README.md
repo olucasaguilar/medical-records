@@ -2,7 +2,9 @@
 
 ## Cabeçalho
 
-- [Executando o Banco de Dados (PostgreSQL)](#executando-o-banco-de-dados-postgresql)
+Em manutenção...
+
+<!-- - [Executando o Banco de Dados (PostgreSQL)](#executando-o-banco-de-dados-postgresql)
 - [Executando os Servidores](#executando-os-servidores)
 - [Exeutando os Jobs](#executando-os-jobs)
 - [Populando o Banco de Dados](#populando-o-banco-de-dados)
@@ -45,35 +47,73 @@
    - Entre na rota principal da aplicação front-end
       - `:3000/`
    - Faça upload de um arquivo CSV manualmente através do botão na página
-   - Recarregue a página e procure pelo exame na listagem.
+   - Recarregue a página e procure pelo exame na listagem. -->
 
-## Executando o Banco de Dados (PostgreSQL)
+## Informações gerais
+
+Em manutenção...
+
+## Pré-requisitos
+
+Em manutenção...
+
+## Configuração
+
+Em manutenção...
+
+## Executando o Back-End
 
 ```bash
-bin/database
+docker compose up
 ```
 
-Este comando deixa o Banco de Dados no ar para ser acessado pelo Servidor.
+Este comando vai executar todos os serviços docker abaixo, que são responsáveis pelo frond-end da aplicação:
+- Banco de Dados (PostgreSQL)
+- Servidor
+- Redis
+- Sidekiq
 
-## Executando os Servidores
+### Populando o Banco de Dados
 
-### Back-end
+Para popular o banco de dados execute o comando a seguir. 
+
+Atenção: o comando anterior de execução do Back-End deve ter sido executado.
+
+```bash
+docker exec server ruby utils/import_from_csv.rb
+```
+
+Este comando irá ler o arquivo CSV `backend/data/data.csv` e popular o banco de dados.
+
+Atenção: Em toda execução deste comando, a tabela do banco será apagada e criada novamente. Para evitar esse comportamento, defina a variável `reset_table` como `false` no arquivo `backend/utils/import_from_csv_to_db.rb`.
+
+### Testes
+
+Para executar os testes, execute o comando a seguir. 
+
+Atenção: o comando anterior de execução do Back-End deve ter sido executado.
+
+```bash
+docker exec server rspec
+```
+
+<!-- ### Back-end
 
 ```bash
 bin/server_back
 ```
 
-Após subir o servidor back-end, para ele funcionar corretamente, o Banco de Dados deve estar e em execução (e de preferencia populado).
+Após subir o servidor back-end, para ele funcionar corretamente, o Banco de Dados deve estar e em execução (e de preferencia populado). -->
 
-#### Rotas API
+### Rotas API
 
-##### Retorna todos os registros médicos em formato JSON:
+#### Retorna todos os registros médicos em formato JSON:
 - **GET** → `localhost:3001/tests`
 
-##### Retorna um registro médico em formato JSON com base no token:
+#### Retorna um registro médico em formato JSON com base no token:
 - **GET** → `localhost:3001/tests/search?token=ABC123`
 
-##### Recebe um arquivo CSV de exames e grava no banco de dados:
+#### Recebe um arquivo CSV de exames e grava no banco de dados:
 - **POST** → `localhost:3001/tests`
 
 Corpo da requisição: 
@@ -83,7 +123,7 @@ Corpo da requisição:
 }
 ```
 
-### Front-end
+## Executando o Front-end
 
 ```bash
 bin/server_front
@@ -91,38 +131,12 @@ bin/server_front
 
 Após subir o servidor front-end, para ele funcionar corretamente, o servidor back-end deve estar e em execução.
 
-#### Rotas
+### Rotas
 
 - `localhost:3000` - Exibe o resultado da consulta da API do back-end.
 
-## Executando os Jobs
+## Fechando a aplicação
 
 ```bash
-bin/jobs
-```
-
-Para os jobs funcionarem corretamente, certifique que o servidor back-end esteja em execução.
-
-## Populando o Banco de Dados
-
-Para popular o banco de dados execute o comando a seguir. 
-
-Atenção: o Banco de Dados e os servidores NÃO devem estar em execução.
-
-```bash
-bin/populate_database
-```
-
-Este comando irá ler o arquivo CSV `data/data.csv` e popular o banco de dados.
-
-Atenção: Em toda execução deste comando, a tabela do banco será apagada e criada novamente. Para evitar esse comportamento, defina a variável `reset_table` como `false` no arquivo `utils/import_from_csv_to_db.rb`.
-
-## Testes
-
-Para executar os testes, execute o comando a seguir. 
-
-Atenção: o Banco de Dados e os servidores NÃO devem estar em execução.
-
-```bash
-bin/tests_back
+docker compose down
 ```

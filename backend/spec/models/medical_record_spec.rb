@@ -1,12 +1,11 @@
+require 'spec_helper'
 require 'pg'
 require './app/models/medical_record'
 require './app/services/medical_record_service'
 require './db/database_connection'
-require './db/database_helper'
 
 RSpec.describe MedicalRecord  do
   before(:each) do
-    DatabaseHelper.wait_for_database
     @conn = DatabaseConnection.new
     MedicalRecordService::CreateTable.create(@conn)
   end
