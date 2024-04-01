@@ -30,27 +30,27 @@ services:
     ports: []
     command: bash -c "bundle install && sidekiq -r ./app/jobs/import_tests_job.rb"
 
-  populate_database:
-    <<: *server
-    ports: []
-    command: bash -c "bundle install && ruby utils/import_from_csv_to_db.rb"
-    depends_on:
-      - database
+  # populate_database:
+  #   <<: *server
+  #   ports: []
+  #   command: bash -c "bundle install && ruby utils/import_from_csv_to_db.rb"
+  #   depends_on:
+  #     - database
 
-  test_database:
-    <<: *database
-    volumes:
-      - test_database:/var/lib/postgresql/data
+  # test_database:
+  #   <<: *database
+  #   volumes:
+  #     - test_database:/var/lib/postgresql/data
 
-  tests:
-    <<: *server
-    ports: []
-    command: bash -c "bundle install && rspec"
-    depends_on:
-      - test_database
-      - redis
+  # tests:
+  #   <<: *server
+  #   ports: []
+  #   command: bash -c "bundle install && rspec"
+  #   depends_on:
+  #     - test_database
+  #     - redis
 
 volumes:
   database:
-  test_database:
+  # test_database:
   bundle:
