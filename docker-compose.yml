@@ -1,6 +1,7 @@
 services:
   database: &database
     image: postgres
+    container_name: database
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
@@ -9,6 +10,7 @@ services:
 
   server: &server
     image: ruby
+    container_name: server
     ports:
       - 3001:3001
     volumes:
@@ -24,6 +26,7 @@ services:
 
   sidekiq:
     <<: *server
+    container_name: sidekiq
     ports: []
     command: bash -c "bundle install && sidekiq -r ./app/jobs/import_tests_job.rb"
 

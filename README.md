@@ -80,7 +80,7 @@ Para popular o banco de dados execute o comando a seguir.
 Atenção: o comando anterior de execução do Back-End deve ter sido executado.
 
 ```bash
-docker exec rebase_labs-server-1 ruby utils/import_from_csv.rb
+docker exec server ruby utils/import_from_csv.rb
 ```
 
 Este comando irá ler o arquivo CSV `backend/data/data.csv` e popular o banco de dados.
@@ -94,7 +94,7 @@ Para executar os testes, execute o comando a seguir.
 Atenção: o comando anterior de execução do Back-End deve ter sido executado.
 
 ```bash
-docker exec rebase_labs-server-1 rspec
+docker exec server rspec
 ```
 
 <!-- ### Back-end
