@@ -3,7 +3,7 @@ require 'pg'
 class DatabaseConnection
   def self.new
     PG.connect(
-      host: 'postgres',
+      host: 'database',
       user: 'postgres',
       dbname: 'postgres',
       password: 'postgres'
