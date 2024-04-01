@@ -5,6 +5,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - database:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   server: &server
     image: ruby
@@ -12,7 +13,7 @@ services:
       - 3001:3001
     volumes:
       - bundle:/usr/local/bundle
-      - ./relabs_back:/app
+      - ./backend:/app
     working_dir: /app
     environment:
       - REDIS_URL=redis://redis:6379/0
@@ -26,20 +27,6 @@ services:
     ports: []
     command: bash -c "bundle install && sidekiq -r ./app/jobs/import_tests_job.rb"
 
-  # test_database:
-  #   <<: *database
-  #   volumes:
-  #     - test_database:/var/lib/postgresql/data
-
-  # tests:
-  #   <<: *server
-  #   ports: []
-  #   command: bash -c "bundle install && rspec"
-  #   depends_on:
-  #     - test_database
-  #     - redis
-
 volumes:
   database:
-  # test_database:
   bundle:

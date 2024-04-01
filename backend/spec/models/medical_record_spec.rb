@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'pg'
 require './app/models/medical_record'
 require './app/services/medical_record_service'
