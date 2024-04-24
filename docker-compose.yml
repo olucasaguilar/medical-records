@@ -23,6 +23,7 @@ services:
 
   redis:
     image: redis
+    container_name: redis
 
   sidekiq:
     <<: *server-backend
@@ -37,7 +38,7 @@ services:
       - 3000:3000
     volumes:
       - bundle:/usr/local/bundle
-      - ./relabs_front:/app
+      - ./frontend:/app
     working_dir: /app
     command: bash -c "bundle install && ruby server.rb -s puma -p 3000 -o '0.0.0.0'"
 
