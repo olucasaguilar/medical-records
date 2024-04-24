@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cd relabs_front
-
-docker compose run --rm tests
-
-docker compose -f docker-compose.yml down --remove-orphans
