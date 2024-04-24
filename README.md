@@ -61,7 +61,7 @@ Em manutenção...
 
 Em manutenção...
 
-## Executando o Back-End
+## Executando a aplicação (Back-End e Front-End)
 
 ```bash
 docker compose up
@@ -69,7 +69,8 @@ docker compose up
 
 Este comando vai executar todos os serviços docker abaixo, que são responsáveis pelo back-end da aplicação:
 - database (banco de dados PostgreSQL)
-- server (servidor back-end)
+- server-backend (servidor back-end)
+- server-frontend (servidor front-end)
 - redis (sistema de armazenamento em memória)
 - sidekiq (sistema de gerenciamento de filas de trabalhos em Ruby)
 
@@ -80,7 +81,7 @@ Para popular o banco de dados execute o comando a seguir.
 Atenção: o comando anterior de execução do Back-End deve ter sido executado.
 
 ```bash
-docker exec server ruby utils/import_from_csv.rb
+docker exec server-backend ruby utils/import_from_csv.rb
 ```
 
 Este comando irá ler o arquivo CSV `backend/data/data.csv` e popular o banco de dados.
@@ -91,21 +92,19 @@ Atenção: Em toda execução deste comando, a tabela do banco será apagada e c
 
 Para executar os testes, execute o comando a seguir. 
 
-Atenção: o comando anterior de execução do Back-End deve ter sido executado.
+Atenção: o comando de execução da aplicação deve ter sido executado anteriormente
 
 ```bash
-docker exec server rspec
+docker exec server-backend rspec
 ```
 
-<!-- ### Back-end
+## Rotas
 
-```bash
-bin/server_back
-```
+### Front-End
 
-Após subir o servidor back-end, para ele funcionar corretamente, o Banco de Dados deve estar e em execução (e de preferencia populado). -->
+- `localhost:3000` - Exibe o resultado da consulta da API do back-end.
 
-### Rotas API
+### API Back-End
 
 #### Retorna todos os registros médicos em formato JSON:
 - **GET** → `localhost:3001/tests`
@@ -122,18 +121,6 @@ Corpo da requisição:
   "csv_file": "file.csv" 
 }
 ```
-
-## Executando o Front-end
-
-```bash
-bin/server_front
-```
-
-Após subir o servidor front-end, para ele funcionar corretamente, o servidor back-end deve estar e em execução.
-
-### Rotas
-
-- `localhost:3000` - Exibe o resultado da consulta da API do back-end.
 
 ## Fechando a aplicação
 

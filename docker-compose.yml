@@ -1,5 +1,5 @@
 services:
-  database: &database
+  database:
     image: postgres
     container_name: database
     environment:
@@ -8,9 +8,9 @@ services:
       - database:/var/lib/postgresql/data
       - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  server: &server
+  server-backend: &server-backend
     image: ruby
-    container_name: server
+    container_name: server-backend
     ports:
       - 3001:3001
     volumes:
@@ -23,12 +23,24 @@ services:
 
   redis:
     image: redis
+    container_name: redis
 
   sidekiq:
-    <<: *server
+    <<: *server-backend
     container_name: sidekiq
     ports: []
     command: bash -c "bundle install && sidekiq -r ./app/jobs/import_tests_job.rb"
+
+  server-frontend: &server-frontend
+    image: ruby
+    container_name: server-frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - bundle:/usr/local/bundle
+      - ./frontend:/app
+    working_dir: /app
+    command: bash -c "bundle install && ruby server.rb -s puma -p 3000 -o '0.0.0.0'"
 
 volumes:
   database:

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd relabs_front
-
-docker compose run --rm --service-ports server
