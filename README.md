@@ -2,7 +2,7 @@
 
 ## Informações gerais
 
-Essa é uma aplicação de visualização de exames médicos desenvolvida durante o Rebase Labs da turma 11 do TreinaDev (2023), utilizando Ruby, JavaScript, HTML e CSS
+Essa é uma aplicação de visualização de exames médicos desenvolvida durante o Rebase Labs (2024) da turma 11 do TreinaDev, utilizando Ruby, JavaScript, HTML e CSS
 
 ## Configuração
 
