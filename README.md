@@ -1,67 +1,24 @@
 # Rebase Labs
 
-## Cabeçalho
-
-Em manutenção...
-
-<!-- - [Executando o Banco de Dados (PostgreSQL)](#executando-o-banco-de-dados-postgresql)
-- [Executando os Servidores](#executando-os-servidores)
-- [Exeutando os Jobs](#executando-os-jobs)
-- [Populando o Banco de Dados](#populando-o-banco-de-dados)
-- [Testes](#testes)
-
-### Nota
-
-- Ao executar um comando pela primeira vez, pode levar alguns segundos a mais devido ao download das gems necessárias.
-
-### Resumo de Comandos
-
-- `bin/database` - Executa o banco de dados
-- `bin/server_front` - Executa o servidor front-end
-- `bin/server_back` - Executa o servidor back-end
-- `bin/populate_database` - Popula o banco de dados pela primeira vez
-- `bin/tests_back` - Executa os testes
-
-### Sugestão de primeiros passos
-
-#### 1- Execute os testes:
-   - `bin/tests_back`
-#### 2- Se abituando com a interface sem o banco populado:
-   - Execute o Banco de Dados e Servidores ao mesmo tempo:
-      - `bin/database`
-      - `bin/server_back`
-      - `bin/server_front`
-   - Entre na rota `localhost:3000/`
-#### 3- Visualizando interface com dados populados:
-   - Feche o que foi aberto anteriormente
-   - Popule o Banco de Dados
-      - `bin/populate_database`
-   - Refaça os comandos do passo 2
-#### 4- Inserindo dados manuelmente através de UPLOAD na página HTML
-   - Feche o que foi aberto anteriormente
-   - Resete o Banco de Dados
-      - `docker volume rm relabs_back_database`
-   - Execute os comandos do passo 2
-   - Execute os jobs
-      - `bin/jobs`
-   - Entre na rota principal da aplicação front-end
-      - `:3000/`
-   - Faça upload de um arquivo CSV manualmente através do botão na página
-   - Recarregue a página e procure pelo exame na listagem. -->
-
 ## Informações gerais
 
-Em manutenção...
-
-## Pré-requisitos
-
-Em manutenção...
+Essa é uma aplicação de visualização de exames médicos desenvolvida durante o Rebase Labs da turma 11 do TreinaDev, utilizando Ruby, JavaScript, HTML e CSS
 
 ## Configuração
 
-Em manutenção...
+Execute os comandos abaixo para clonar o repositório da aplicação:
+
+```bash
+git clone git@github.com:olucasaguilar/medical-records.git
+```
+
+```bash
+cd medical-records
+```
 
 ## Executando a aplicação (Back-End e Front-End)
+
+É necessário ter Docker instalado antes de executar a aplicação.
 
 ```bash
 docker compose up
